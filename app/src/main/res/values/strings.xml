@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BetGame</string>
+    <string name="competitions_activity">Competitions</string>
+    <string name="competitions_fixtures_activity">Competition Fixtures</string>
+    <string name="competitionsButton">Show Competitions</string>
+    <string name="launching_posts_activity">Launching Posts Activity..</string>
+    <string name="error">Error! Check your network connection!</string>
+</resources>

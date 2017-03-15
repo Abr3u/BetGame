@@ -1,0 +1,60 @@
+package com.abreu.betgame.ui.presenters;
+
+import com.abreu.betgame.events.ErrorEvent;
+import com.abreu.betgame.events.NewCompetitionFixturesEvent;
+import com.abreu.betgame.model.CompetitionFixturesAPI;
+import com.abreu.betgame.model.pojo.Fixture;
+import com.abreu.betgame.model.pojo.FixtureResponse;
+import com.abreu.betgame.utility.CollectionsUtility;
+import com.abreu.betgame.utility.IPredicate;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+public class CompetitionFixturesPresenter {
+    CompetitionFixturesAPI competitionFixturesAPI;
+
+    @Inject
+    public CompetitionFixturesPresenter(CompetitionFixturesAPI competitionFixturesAPI) {
+        this.competitionFixturesAPI = competitionFixturesAPI;
+    }
+
+    public void loadCompetitonFixturesFromAPI(int competitionId) {
+        competitionFixturesAPI.getCompetitionFixturesObservable(competitionId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers
+                                                                                     .mainThread())
+                .subscribe(new Subscriber<FixtureResponse>() {
+                    @Override
+                    public void onNext(FixtureResponse newFixtures) {
+
+                        IPredicate<Fixture> active = new IPredicate<Fixture>() {
+                            public boolean apply(Fixture fixture) {
+                                return fixture.getStatus().equals("SCHEDULED") ||
+                                        fixture.getStatus().equals("TIMED") ? true : false;
+                            }
+                        };
+                        List<Fixture> filteredFixtures = new ArrayList<Fixture>(
+                                CollectionsUtility.filter(newFixtures.getFixtureList(),active));
+                        EventBus.getDefault().post(new NewCompetitionFixturesEvent(filteredFixtures));
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        EventBus.getDefault().post(new ErrorEvent());
+                    }
+
+                });
+    }
+
+}
