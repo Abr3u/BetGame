@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "163623525120",
+    "firebase_url": "https://betgame-3ab5a.firebaseio.com",
+    "project_id": "betgame-3ab5a",
+    "storage_bucket": "betgame-3ab5a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163623525120:android:d963b91b6325b20d",
+        "android_client_info": {
+          "package_name": "com.abreu.betgame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "163623525120-r7f8e7f08j8ohpg9oobfo1a3adbnupeo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abreu.betgame",
+            "certificate_hash": "0fa82db568f04da64ffec407fbcd5fba98073639"
+          }
+        },
+        {
+          "client_id": "163623525120-k5661gh1tvjcm53b36voi6agb5bh4rvq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmKWen9vvkMcg5oC_L--yMMga16JtRe9Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "163623525120-k5661gh1tvjcm53b36voi6agb5bh4rvq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

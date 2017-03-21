@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">BetGame</string>
+    <string name="sign_in_activity">Sign In</string>
+    <string name="sign_in_button">Sign In</string>
     <string name="competitions_activity">Competitions</string>
     <string name="competitions_fixtures_activity">Competition Fixtures</string>
     <string name="competitionsButton">Show Competitions</string>
