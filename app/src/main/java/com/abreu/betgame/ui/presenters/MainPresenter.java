@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.abreu.betgame.MyApplicationContext;
 import com.abreu.betgame.model.pojo.User;
+import com.abreu.betgame.ui.activities.MainActivity;
 import com.abreu.betgame.ui.activities.SignInActivity;
 import com.abreu.betgame.ui.screen_contracts.MainScreen;
 import com.google.android.gms.auth.api.Auth;
@@ -101,4 +102,7 @@ public class MainPresenter {
     }
 
 
+    public void OnShowMyBetsButtonClicked(MainScreen mainScreen) {
+        mainScreen.launchMyBetsActivity();
+    }
 }

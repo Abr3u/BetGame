@@ -50,13 +50,24 @@ public class MainActivity extends AppCompatActivity implements MainScreen{
 
     @SuppressWarnings("unused")
     @OnClick(R.id.show_posts_button)
-    public void onListSampleButtonClick() {
+    public void onShowCompetitionsButtonClick() {
         mainPresenter.OnShowCompetitionsButtonClick(this);
+    }
+
+    @OnClick(R.id.my_bets_button)
+    public void onShowMyBetsButtonClicked(){
+        mainPresenter.OnShowMyBetsButtonClicked(this);
     }
 
     @Override
     public void launchCompetitonsActivity() {
         Intent intent = new Intent(this, CompetitionsActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void launchMyBetsActivity() {
+        Intent intent = new Intent(this, MyBetsActivity.class);
         startActivity(intent);
     }
 

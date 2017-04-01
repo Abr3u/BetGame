@@ -7,4 +7,6 @@
     <string name="competitionsButton">Show Competitions</string>
     <string name="launching_posts_activity">Launching Posts Activity..</string>
     <string name="error">Error! Check your network connection!</string>
+    <string name="show_my_bets_button">Show my bets</string>
+    <string name="MyBetsLabel">My Bets</string>
 </resources>

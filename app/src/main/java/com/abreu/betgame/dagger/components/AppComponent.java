@@ -4,6 +4,7 @@ import com.abreu.betgame.dagger.modules.AppModule;
 import com.abreu.betgame.ui.activities.CompetitionFixturesActivity;
 import com.abreu.betgame.ui.activities.MainActivity;
 import com.abreu.betgame.ui.activities.CompetitionsActivity;
+import com.abreu.betgame.ui.activities.MyBetsActivity;
 
 import javax.inject.Singleton;
 
@@ -16,4 +17,5 @@ public interface AppComponent {
     void inject(MainActivity activity);
     void inject(CompetitionsActivity activity);
     void inject(CompetitionFixturesActivity activity);
+    void inject(MyBetsActivity activity);
 }

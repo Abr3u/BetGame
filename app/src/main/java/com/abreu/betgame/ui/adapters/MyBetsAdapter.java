@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.abreu.betgame.R;
+import com.abreu.betgame.model.pojo.Bet;
 import com.abreu.betgame.model.pojo.Competition;
 import com.abreu.betgame.ui.activities.CompetitionFixturesActivity;
-import com.abreu.betgame.utility.IntentKeys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,18 +20,18 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CompetitionsListAdapter extends RecyclerView.Adapter<CompetitionsListAdapter.ViewHolder> {
+public class MyBetsAdapter extends RecyclerView.Adapter<MyBetsAdapter.ViewHolder> {
 
-    private List<Competition> competitions;
+    private List<Bet> bets;
     private Context mContext;
 
-    public CompetitionsListAdapter(Context context) {
+    public MyBetsAdapter(Context context) {
         this.mContext = context;
-        this.competitions = new ArrayList<>();
+        this.bets = new ArrayList<>();
     }
 
-    public void addCompetitions(List<Competition> newCompetitions) {
-        competitions.addAll(newCompetitions);
+    public void addBet(Bet bet) {
+        bets.add(bet);
         notifyDataSetChanged();
     }
 
@@ -39,28 +39,21 @@ public class CompetitionsListAdapter extends RecyclerView.Adapter<CompetitionsLi
     public ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.competition_row_item, parent, false);
         final ViewHolder viewHolder = new ViewHolder(v);
-
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(mContext, CompetitionFixturesActivity.class);
-                i.putExtra(IntentKeys.competitionId.toString(),
-                        Integer.parseInt(""+competitions.get(viewHolder.getAdapterPosition()).getId()));
-                mContext.startActivity(i);
-            }
-        });
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.postTitle.setText(competitions.get(position).getCaption());
-        viewHolder.postBody.setText(""+competitions.get(position).getLeague());
+        Bet bet = bets.get(position);
+        String title = bet.homeTeam+" vs "+bet.awayTeam;
+        String body = "bet on "+bet.bet+" "+bet.betOdd;
+        viewHolder.postTitle.setText(title);
+        viewHolder.postBody.setText(body);
     }
 
     @Override
     public int getItemCount() {
-        return competitions.size();
+        return bets.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{

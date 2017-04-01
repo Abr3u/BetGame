@@ -32,6 +32,10 @@
             android:name="com.abreu.betgame.ui.activities.CompetitionFixturesActivity"
             android:label="@string/competitions_fixtures_activity">
         </activity>
+        <activity
+            android:name="com.abreu.betgame.ui.activities.MyBetsActivity"
+            android:label="@string/MyBetsLabel">
+        </activity>
     </application>
 
 </manifest>
