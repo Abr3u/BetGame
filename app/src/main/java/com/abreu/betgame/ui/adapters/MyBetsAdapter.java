@@ -1,9 +1,7 @@
 package com.abreu.betgame.ui.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +9,6 @@ import android.widget.TextView;
 
 import com.abreu.betgame.R;
 import com.abreu.betgame.model.pojo.Bet;
-import com.abreu.betgame.model.pojo.Competition;
-import com.abreu.betgame.ui.activities.CompetitionFixturesActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +27,18 @@ public class MyBetsAdapter extends RecyclerView.Adapter<MyBetsAdapter.ViewHolder
     }
 
     public void addBet(Bet bet) {
+        if (bets.contains(bet)) {
+            bets.remove(bet);
+        }
         bets.add(bet);
         notifyDataSetChanged();
+    }
+
+    public void removeBet(Bet bet) {
+        if (bets.contains(bet)) {
+            bets.remove(bet);
+            notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -45,8 +51,9 @@ public class MyBetsAdapter extends RecyclerView.Adapter<MyBetsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         Bet bet = bets.get(position);
-        String title = bet.homeTeam+" vs "+bet.awayTeam;
-        String body = "bet on "+bet.bet+" "+bet.betOdd;
+        String won = (bet.wonBet) ? "Won" : "Lost";
+        String title = bet.homeTeam + " vs " + bet.awayTeam;
+        String body = "bet on " + bet.bet + " (" + bet.betOdd + ") " + won;
         viewHolder.postTitle.setText(title);
         viewHolder.postBody.setText(body);
     }
@@ -56,7 +63,7 @@ public class MyBetsAdapter extends RecyclerView.Adapter<MyBetsAdapter.ViewHolder
         return bets.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.post_title)
         TextView postTitle;
         @BindView(R.id.post_body)

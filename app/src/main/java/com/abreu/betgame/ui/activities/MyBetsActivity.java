@@ -12,6 +12,7 @@ import com.abreu.betgame.R;
 import com.abreu.betgame.dagger.DaggerInjector;
 import com.abreu.betgame.events.ErrorEvent;
 import com.abreu.betgame.events.NewMyBetEvent;
+import com.abreu.betgame.events.RemovedBetEvent;
 import com.abreu.betgame.ui.adapters.MyBetsAdapter;
 import com.abreu.betgame.ui.decorators.DividerItemDecoration;
 import com.abreu.betgame.ui.presenters.MyBetsPresenter;
@@ -80,6 +81,13 @@ public class MyBetsActivity extends AppCompatActivity implements MyBetsScreen {
     public void onEventMainThread(NewMyBetEvent myBetEvent) {
         hideError();
         myBetsAdapter.addBet(myBetEvent.getBet());
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(RemovedBetEvent betEvent) {
+        hideError();
+        myBetsAdapter.removeBet(betEvent.getBet());
     }
 
     @SuppressWarnings("unused")

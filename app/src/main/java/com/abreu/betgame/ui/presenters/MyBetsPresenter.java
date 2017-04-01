@@ -2,8 +2,10 @@ package com.abreu.betgame.ui.presenters;
 
 import android.provider.ContactsContract;
 
+import com.abreu.betgame.events.ErrorEvent;
 import com.abreu.betgame.events.NewCompetitionsEvent;
 import com.abreu.betgame.events.NewMyBetEvent;
+import com.abreu.betgame.events.RemovedBetEvent;
 import com.abreu.betgame.model.MyBetsDatabaseReference;
 import com.abreu.betgame.model.pojo.Bet;
 import com.google.firebase.database.ChildEventListener;
@@ -38,22 +40,25 @@ public class MyBetsPresenter {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                Bet bet = dataSnapshot.getValue(Bet.class);
+                EventBus.getDefault().post(new NewMyBetEvent(bet));
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                Bet bet = dataSnapshot.getValue(Bet.class);
+                EventBus.getDefault().post(new RemovedBetEvent(bet));
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+                Bet bet = dataSnapshot.getValue(Bet.class);
+                EventBus.getDefault().post(new NewMyBetEvent(bet));
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                EventBus.getDefault().post(new ErrorEvent());
             }
         });
     }

@@ -29,6 +29,23 @@ public class Bet {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Bet))
+            return false;
+        Bet other = (Bet) obj;
+        return this.homeTeam.equals(other.homeTeam) &&
+                this.awayTeam.equals(other.awayTeam) &&
+                this.date.equals(other.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return homeTeam.hashCode()+awayTeam.hashCode()+date.hashCode();
+    }
+
     public Map<String,Object> toMap(){
         HashMap<String, Object> result = new HashMap<>();
         result.put("homeTeam", this.homeTeam);
