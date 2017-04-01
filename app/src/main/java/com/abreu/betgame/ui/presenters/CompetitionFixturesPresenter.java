@@ -1,16 +1,21 @@
 package com.abreu.betgame.ui.presenters;
 
+import com.abreu.betgame.MyApplicationContext;
 import com.abreu.betgame.events.ErrorEvent;
 import com.abreu.betgame.events.NewCompetitionFixturesEvent;
 import com.abreu.betgame.model.CompetitionFixturesAPI;
+import com.abreu.betgame.model.pojo.Bet;
 import com.abreu.betgame.model.pojo.Fixture;
 import com.abreu.betgame.model.pojo.FixtureResponse;
 import com.abreu.betgame.utility.CollectionsUtility;
 import com.abreu.betgame.utility.IPredicate;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,11 +25,17 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class CompetitionFixturesPresenter {
+
+    private static final String BETS_REF = "/bets/";
+    private final DatabaseReference myBetsDatabaseRef;
+
     CompetitionFixturesAPI competitionFixturesAPI;
 
     @Inject
     public CompetitionFixturesPresenter(CompetitionFixturesAPI competitionFixturesAPI) {
         this.competitionFixturesAPI = competitionFixturesAPI;
+        String myId = MyApplicationContext.getInstance().getFirebaseUser().getUid();
+        this.myBetsDatabaseRef = FirebaseDatabase.getInstance().getReference(BETS_REF).child(myId);
     }
 
     public void loadCompetitonFixturesFromAPI(int competitionId) {
@@ -57,4 +68,26 @@ public class CompetitionFixturesPresenter {
                 });
     }
 
+
+    public void betOnTeam(Fixture fixture,String bet){
+        String betOdd = "";
+        String betTeam = "";
+        switch(bet){
+            case "home":
+                betOdd = fixture.getOdds().getHomeWin().toString();
+                betTeam = fixture.getHomeTeamName();
+                break;
+            case "draw":
+                betOdd = fixture.getOdds().getDraw().toString();
+                betTeam = "draw";
+                break;
+            case "away":
+                betOdd = fixture.getOdds().getAwayWin().toString();
+                betTeam = fixture.getAwayTeamName();
+                break;
+        }
+        Bet newBet = new Bet(fixture.getHomeTeamName(),fixture.getAwayTeamName(),fixture.getDate(),betTeam,betOdd);
+        String ref = newBet.getReference();
+        myBetsDatabaseRef.child(ref).setValue(newBet.toMap());
+    }
 }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.abreu.betgame.R;
 import com.abreu.betgame.model.pojo.Fixture;
+import com.abreu.betgame.ui.activities.CompetitionFixturesActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,47 +37,59 @@ public class CompetitionFixturesListAdapter extends RecyclerView.Adapter<Competi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fixture_row_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fixture_row_item_odds, parent, false);
         ViewHolder viewHolder = new ViewHolder(v);
-        setupViewHolderListeners(viewHolder);
         return viewHolder;
     }
 
-    private void setupViewHolderListeners(final ViewHolder viewHolder) {
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        viewHolder.date.setText(fixtures.get(position).getDate());
+        viewHolder.home.setText(fixtures.get(position).getHomeTeamName());
+        viewHolder.away.setText(fixtures.get(position).getAwayTeamName());
+        viewHolder.homeOdd.setText(fixtures.get(position).getOdds().getHomeWin().toString());
+        viewHolder.drawOdd.setText(fixtures.get(position).getOdds().getDraw().toString());
+        viewHolder.awayOdd.setText(fixtures.get(position).getOdds().getAwayWin().toString());
+        setupViewHolderListeners(viewHolder,fixtures.get(position));
+    }
+
+    private void setupViewHolderListeners(ViewHolder viewHolder,final Fixture fixture) {
         View.OnClickListener betHome = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAlertDialog(viewHolder.home.getText().toString());
+                showAlertDialog(fixture,fixture.getHomeTeamName(),"home");
             }
         };
         View.OnClickListener betAway = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAlertDialog(viewHolder.away.getText().toString());
+                showAlertDialog(fixture,fixture.getAwayTeamName(),"away");
             }
         };
         View.OnClickListener betDraw = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAlertDialog("draw");
+                showAlertDialog(fixture,"draw","draw");
             }
         };
         viewHolder.away.setOnClickListener(betAway);
+        viewHolder.awayOdd.setOnClickListener(betAway);
         viewHolder.home.setOnClickListener(betHome);
-        viewHolder.draw.setOnClickListener(betDraw);
+        viewHolder.homeOdd.setOnClickListener(betHome);
+        viewHolder.drawOdd.setOnClickListener(betDraw);
     }
 
-    private void showAlertDialog(final String team) {
+    private void showAlertDialog(final Fixture fixture, String betTeamName,final String bet) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("Place bet");
-        builder.setMessage("Do you wish to place a bet on "+team+" ?");
+        builder.setMessage("Do you wish to place a bet on "+betTeamName+" ?");
 
         String positiveText = "Yes";
         builder.setPositiveButton(positiveText,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(mContext, "You betted on "+team, Toast.LENGTH_LONG).show();
+                        ((CompetitionFixturesActivity)mContext).betOnTeam(fixture,bet);
                     }
                 });
 
@@ -94,13 +107,6 @@ public class CompetitionFixturesListAdapter extends RecyclerView.Adapter<Competi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.date.setText(fixtures.get(position).getDate());
-        viewHolder.home.setText(fixtures.get(position).getHomeTeamName());
-        viewHolder.away.setText(fixtures.get(position).getAwayTeamName());
-    }
-
-    @Override
     public int getItemCount() {
         return fixtures.size();
     }
@@ -112,8 +118,12 @@ public class CompetitionFixturesListAdapter extends RecyclerView.Adapter<Competi
         TextView home;
         @BindView(R.id.awayTextView)
         TextView away;
-        @BindView(R.id.drawTextView)
-        TextView draw;
+        @BindView(R.id.homeOddTextView)
+        TextView homeOdd;
+        @BindView(R.id.drawOddTextView)
+        TextView drawOdd;
+        @BindView(R.id.awayOddTextView)
+        TextView awayOdd;
 
         public ViewHolder(View view) {
             super(view);

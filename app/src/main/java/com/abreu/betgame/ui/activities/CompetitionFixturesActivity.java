@@ -7,15 +7,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.abreu.betgame.R;
 import com.abreu.betgame.dagger.DaggerInjector;
 import com.abreu.betgame.events.ErrorEvent;
 import com.abreu.betgame.events.NewCompetitionFixturesEvent;
+import com.abreu.betgame.model.pojo.Fixture;
 import com.abreu.betgame.ui.adapters.CompetitionFixturesListAdapter;
 import com.abreu.betgame.ui.decorators.DividerItemDecoration;
 import com.abreu.betgame.ui.presenters.CompetitionFixturesPresenter;
 import com.abreu.betgame.ui.screen_contracts.CompetitionFixturesScreen;
+import com.abreu.betgame.utility.IntentKeys;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -52,7 +55,7 @@ public class CompetitionFixturesActivity extends AppCompatActivity implements Co
         DaggerInjector.get().inject(this);
         ButterKnife.bind(this);
 
-        int competitionId = getIntent().getIntExtra("competitionId",426);
+        int competitionId = getIntent().getIntExtra(IntentKeys.competitionId.toString(),426);
 
         initRecyclerView();
         competitionFixturesPresenter.loadCompetitonFixturesFromAPI(competitionId);
@@ -103,5 +106,10 @@ public class CompetitionFixturesActivity extends AppCompatActivity implements Co
     private void showError() {
         competitionFixturesRecyclerView.setVisibility(View.GONE);
         errorView.setVisibility(View.VISIBLE);
+    }
+
+    public void betOnTeam(Fixture fixture, String bet){
+        Toast.makeText(this, "Placing bet", Toast.LENGTH_SHORT).show();
+        competitionFixturesPresenter.betOnTeam(fixture,bet);
     }
 }
