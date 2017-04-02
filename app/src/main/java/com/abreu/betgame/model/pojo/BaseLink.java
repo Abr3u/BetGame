@@ -4,7 +4,7 @@ package com.abreu.betgame.model.pojo;
  * Created by ricar on 02/04/2017.
  */
 
-public class CompetitionLink {
+public class BaseLink {
     private String href;
 
     public String getHref() {

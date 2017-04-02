@@ -3,6 +3,7 @@ package com.abreu.betgame.dagger.modules;
 import com.abreu.betgame.model.CompetitionFixturesAPI;
 import com.abreu.betgame.model.CompetitionsAPI;
 import com.abreu.betgame.model.MyBetsDatabaseReference;
+import com.abreu.betgame.model.SingleFixtureAPI;
 
 import javax.inject.Singleton;
 
@@ -21,6 +22,11 @@ public class AppModule {
     @Provides
     @Singleton
     CompetitionFixturesAPI provideCompetitionFixturesApi() {return new CompetitionFixturesAPI();
+    }
+
+    @Provides
+    @Singleton
+    SingleFixtureAPI provideSingleFixtureApi() {return new SingleFixtureAPI();
     }
 
     @Provides

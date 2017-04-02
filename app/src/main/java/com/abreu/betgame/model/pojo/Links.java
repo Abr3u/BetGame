@@ -1,40 +1,40 @@
 package com.abreu.betgame.model.pojo;
 
 public class Links {
-    private SelfLink self;
-    private CompetitionLink competition;
-    private HomeTeamLink homeTeam;
-    private AwayTeamLink awayTeam;
+    private BaseLink self;
+    private BaseLink competition;
+    private BaseLink homeTeam;
+    private BaseLink awayTeam;
 
-    public SelfLink getSelf() {
+    public BaseLink getSelf() {
         return self;
     }
 
-    public void setSelf(SelfLink selfLink) {
+    public void setSelf(BaseLink selfLink) {
         this.self = selfLink;
     }
 
-    public CompetitionLink getCompetition() {
+    public BaseLink getCompetition() {
         return competition;
     }
 
-    public void setCompetition(CompetitionLink competition) {
+    public void setCompetition(BaseLink competition) {
         this.competition = competition;
     }
 
-    public HomeTeamLink getHomeTeam() {
+    public BaseLink getHomeTeam() {
         return homeTeam;
     }
 
-    public void setHomeTeam(HomeTeamLink homeTeamLink) {
+    public void setHomeTeam(BaseLink homeTeamLink) {
         this.homeTeam = homeTeamLink;
     }
 
-    public AwayTeamLink getAwayTeam() {
+    public BaseLink getAwayTeam() {
         return awayTeam;
     }
 
-    public void setAwayTeam(AwayTeamLink awayTeamLink) {
+    public void setAwayTeam(BaseLink awayTeamLink) {
         this.awayTeam = awayTeamLink;
     }
 

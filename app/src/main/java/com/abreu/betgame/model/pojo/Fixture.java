@@ -1,5 +1,8 @@
 package com.abreu.betgame.model.pojo;
 
+
+import com.google.gson.annotations.Expose;
+
 public class Fixture {
     private Links _links;
     private String date;
