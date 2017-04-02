@@ -56,8 +56,8 @@ public class MyBetsAdapter extends RecyclerView.Adapter<MyBetsAdapter.ViewHolder
         Boolean wonBet = bet.wonBet;
         String won = "";
         if(wonBet != null){
-            won = (bet.wonBet) ? "WON" : "LOST";
-            if(bet.wonBet){
+            won = (wonBet) ? "WON" : "LOST";
+            if(wonBet){
                 viewHolder.itemView.setBackgroundColor(Color.GREEN);
             }else{
                 viewHolder.itemView.setBackgroundColor(Color.RED);

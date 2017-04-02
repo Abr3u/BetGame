@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.abreu.betgame.R;
 import com.abreu.betgame.model.pojo.Fixture;
+import com.abreu.betgame.model.pojo.Odds;
 import com.abreu.betgame.ui.activities.CompetitionFixturesActivity;
 
 import java.util.ArrayList;
@@ -47,9 +48,13 @@ public class CompetitionFixturesListAdapter extends RecyclerView.Adapter<Competi
         viewHolder.date.setText(fixtures.get(position).getDate());
         viewHolder.home.setText(fixtures.get(position).getHomeTeamName());
         viewHolder.away.setText(fixtures.get(position).getAwayTeamName());
-        viewHolder.homeOdd.setText(fixtures.get(position).getOdds().getHomeWin().toString());
-        viewHolder.drawOdd.setText(fixtures.get(position).getOdds().getDraw().toString());
-        viewHolder.awayOdd.setText(fixtures.get(position).getOdds().getAwayWin().toString());
+
+        Odds odds = fixtures.get(position).getOdds();
+        if(odds != null){
+            viewHolder.homeOdd.setText(odds.getHomeWin().toString());
+            viewHolder.drawOdd.setText(odds.getDraw().toString());
+            viewHolder.awayOdd.setText(odds.getAwayWin().toString());
+        }
         setupViewHolderListeners(viewHolder,fixtures.get(position));
     }
 
