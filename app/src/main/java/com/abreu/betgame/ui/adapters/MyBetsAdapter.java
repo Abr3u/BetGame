@@ -1,6 +1,7 @@
 package com.abreu.betgame.ui.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,11 @@ public class MyBetsAdapter extends RecyclerView.Adapter<MyBetsAdapter.ViewHolder
         String won = "";
         if(wonBet != null){
             won = (bet.wonBet) ? "WON" : "LOST";
+            if(bet.wonBet){
+                viewHolder.itemView.setBackgroundColor(Color.GREEN);
+            }else{
+                viewHolder.itemView.setBackgroundColor(Color.RED);
+            }
         }
 
         String title = bet.homeTeam + " vs " + bet.awayTeam;

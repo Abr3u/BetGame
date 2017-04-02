@@ -16,6 +16,9 @@ import com.google.firebase.database.DatabaseError;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import rx.Subscriber;
@@ -42,49 +45,60 @@ public class MyBetsPresenter {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 final Bet bet = dataSnapshot.getValue(Bet.class);
-                String matchKey = dataSnapshot.getKey();
-                Log.d("ggg", "matchKey " + matchKey);
-                singleFixtureAPI.getSingleFixtureObservable(Integer.parseInt(matchKey)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers
-                        .mainThread())
-                        .subscribe(new Subscriber<SingleFixtureResponse>() {
-                            @Override
-                            public void onCompleted() {
+                if (bet.wonBet != null) {
+                    Log.d("ggg","ja sabia resultado");
+                    EventBus.getDefault().post(new NewMyBetEvent(bet));
+                } else {
+                    //check if bet was won
+                    final String matchKey = dataSnapshot.getKey();
+                    Log.d("ggg", "matchKey " + matchKey);
+                    singleFixtureAPI.getSingleFixtureObservable(Integer.parseInt(matchKey)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers
+                            .mainThread())
+                            .subscribe(new Subscriber<SingleFixtureResponse>() {
+                                @Override
+                                public void onCompleted() {
 
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.e("ggg", "ERRO");
-                                Log.e("ggg", "TS " + e.toString());
-                            }
-
-                            @Override
-                            public void onNext(SingleFixtureResponse fixture) {
-                                Result result = fixture.getFixture().getResult();
-                                Integer goalsHome = result.getGoalsHomeTeam();
-                                Integer goalsAway = result.getGoalsAwayTeam();
-                                if (goalsAway != null && goalsHome != null) {
-                                    String matchResult;
-                                    Bet closedBet;
-                                    if (goalsAway > goalsHome) {
-                                        matchResult = "away";
-                                    } else if (goalsHome > goalsAway) {
-                                        matchResult = "home";
-                                    } else {
-                                        matchResult = "draw";
-                                    }
-                                    if (bet.bet.equals(matchResult)) {
-                                        closedBet = new Bet(bet.homeTeam, bet.awayTeam, bet.date, bet.bet, bet.betOdd, true);
-                                    } else {
-                                        closedBet = new Bet(bet.homeTeam, bet.awayTeam, bet.date, bet.bet, bet.betOdd, false);
-                                    }
-                                    //updateChildren firebase wonBet : bet.equals(result)
-                                    EventBus.getDefault().post(new NewMyBetEvent(closedBet));
-                                } else {
-                                    EventBus.getDefault().post(new NewMyBetEvent(bet));
                                 }
-                            }
-                        });
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Log.e("ggg", "ERRO");
+                                    Log.e("ggg", "TS " + e.toString());
+                                }
+
+                                @Override
+                                public void onNext(SingleFixtureResponse fixture) {
+                                    Result result = fixture.getFixture().getResult();
+                                    Integer goalsHome = result.getGoalsHomeTeam();
+                                    Integer goalsAway = result.getGoalsAwayTeam();
+                                    if (goalsAway != null && goalsHome != null) {
+                                        String matchResult;
+                                        if (goalsAway > goalsHome) {
+                                            matchResult = "away";
+                                        } else if (goalsHome > goalsAway) {
+                                            matchResult = "home";
+                                        } else {
+                                            matchResult = "draw";
+                                        }
+                                        Map<String, Object> childUpdates = new HashMap<>();
+                                        Bet closedBet;
+                                        if (bet.bet.equals(matchResult)) {
+                                            closedBet = new Bet(bet.homeTeam, bet.awayTeam, bet.date, bet.bet, bet.betOdd, true);
+                                            childUpdates.put("wonBet", true);
+                                        } else {
+                                            closedBet = new Bet(bet.homeTeam, bet.awayTeam, bet.date, bet.bet, bet.betOdd, false);
+                                            childUpdates.put("wonBet", false);
+                                        }
+                                        Log.d("ggg","soube resultado");
+                                        EventBus.getDefault().post(new NewMyBetEvent(closedBet));
+                                        myBetsRef.getReference().child(matchKey).updateChildren(childUpdates);
+                                    } else {
+                                        Log.d("ggg","nao sei resultado ainda");
+                                        EventBus.getDefault().post(new NewMyBetEvent(bet));
+                                    }
+                                }
+                            });
+                }
             }
 
             @Override
