@@ -1,7 +1,7 @@
 package com.abreu.betgame.model.pojo;
 
 public class Fixture {
-
+    private Links _links;
     private String date;
     private String status;
     private Integer matchday;
@@ -71,6 +71,14 @@ public class Fixture {
 
     public void setOdds(Odds odds) {
         this.odds = odds;
+    }
+
+    public Links get_links() {
+        return _links;
+    }
+
+    public void set_links(Links _links) {
+        this._links = _links;
     }
 
 }

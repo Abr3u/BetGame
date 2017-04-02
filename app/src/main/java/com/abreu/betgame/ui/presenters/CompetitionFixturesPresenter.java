@@ -86,8 +86,9 @@ public class CompetitionFixturesPresenter {
                 betTeam = fixture.getAwayTeamName();
                 break;
         }
-        Bet newBet = new Bet(fixture.getHomeTeamName(),fixture.getAwayTeamName(),fixture.getDate(),betTeam,betOdd,false);
-        String ref = newBet.getReference();
+        Bet newBet = new Bet(fixture.getHomeTeamName(),fixture.getAwayTeamName(),fixture.getDate(),betTeam,betOdd,null);
+        String[] tokenArray = fixture.get_links().getSelf().getHref().split("/");
+        String ref = tokenArray[tokenArray.length-1];
         myBetsDatabaseRef.child(ref).setValue(newBet.toMap());
     }
 }

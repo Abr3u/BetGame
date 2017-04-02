@@ -16,7 +16,7 @@ public class Bet {
     public String bet;
     public String betOdd;
 
-    public Bet(String homeTeam, String awayTeam, String date, String bet, String betOdd,boolean wonBet) {
+    public Bet(String homeTeam, String awayTeam, String date, String bet, String betOdd,Boolean wonBet) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.date = date;
@@ -55,9 +55,5 @@ public class Bet {
         result.put("betOdd", this.betOdd);
         result.put("wonBet",this.wonBet);
         return result;
-    }
-
-    public String getReference(){
-        return this.homeTeam+"-"+this.awayTeam+"@"+this.date;
     }
 }

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -89,6 +90,7 @@ public class CompetitionFixturesActivity extends AppCompatActivity implements Co
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(NewCompetitionFixturesEvent newCompetitionFixturesEvent) {
         hideError();
+        Log.d("ggg","test -> "+newCompetitionFixturesEvent.getCompetitionFixtures().get(0).get_links().getSelf().getHref());
         competitionFixturesListAdapter.addFixtures(newCompetitionFixturesEvent.getCompetitionFixtures());
     }
 

@@ -51,7 +51,13 @@ public class MyBetsAdapter extends RecyclerView.Adapter<MyBetsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         Bet bet = bets.get(position);
-        String won = (bet.wonBet) ? "Won" : "Lost";
+
+        Boolean wonBet = bet.wonBet;
+        String won = "";
+        if(wonBet != null){
+            won = (bet.wonBet) ? "WON" : "LOST";
+        }
+
         String title = bet.homeTeam + " vs " + bet.awayTeam;
         String body = "bet on " + bet.bet + " (" + bet.betOdd + ") " + won;
         viewHolder.postTitle.setText(title);
